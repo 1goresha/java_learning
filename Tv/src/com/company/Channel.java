@@ -1,5 +1,7 @@
 package com.company;
 
+import java.util.Random;
+
 public class Channel {
     private String name;
     private Program[] programs;
@@ -20,6 +22,16 @@ public class Channel {
         }
         this.programs[currentCountOfPrograms] = program;
         currentCountOfPrograms++;
+    }
+
+    public void showRandomProgram(){
+        Random random = new Random();
+        int rand = random.nextInt(MAX_COUNT_OF_PROGRAMS);
+        if (programs[rand] == null){
+            System.out.println("can not find this program");
+            return;
+        }
+        this.programs[rand].whatAboutThisProgram();
     }
 
 

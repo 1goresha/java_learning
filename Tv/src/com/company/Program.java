@@ -9,7 +9,7 @@ public class Program {
         this.whatAboutIt = whatAboutIt;
     }
 
-    public void WhatAboutIt(){
+    public void whatAboutThisProgram(){
         System.out.println(whatAboutIt);
     }
 
