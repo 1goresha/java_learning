@@ -17,6 +17,7 @@ public class Main {
         mi24.go(200);
 
         mi24.shoot();
+        car.shoot();
 
         Parking.parkIn(car);
         Parking.parkIn(tank);
