@@ -15,9 +15,11 @@ public class Main {
 
         singleton1.setLog("hello from singleton1");
         System.out.println(singleton1.getLog());
+        int a = 1;
 
         singleton2.setLog("hello from singleton2");
         System.out.println(singleton2.getLog());
         System.out.println(singleton1.getLog());
+        int b = 0;
     }
 }
