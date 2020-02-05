@@ -10,5 +10,7 @@ public class Main {
 
         parking.park(mi24);
         parking.park(armata);
+
+        mi24.park(parking);
     }
 }
