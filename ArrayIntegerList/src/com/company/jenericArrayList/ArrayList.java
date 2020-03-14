@@ -1,6 +1,7 @@
 package com.company.jenericArrayList;
 
 import java.lang.reflect.Type;
+import java.util.Comparator;
 import java.util.Objects;
 
 public class ArrayList<T> implements List<T> {
@@ -69,6 +70,20 @@ public class ArrayList<T> implements List<T> {
         for (int j = 0; j < array.length - 1; j++) {
             for (int i = j; i < array.length - 1; i++) {
                 if (((T)tArray[i]).compareTo((T)tArray[j]) < 0) {
+                    temp = (T)tArray[j];
+                    tArray[j] = tArray[i];
+                    tArray[i] = temp;
+                }
+            }
+        }
+    }
+
+    public void sort(Comparator<T> comparator) {
+        T temp;
+        Object[] tArray = this.array;
+        for (int j = 0; j < array.length - 1; j++) {
+            for (int i = j; i < array.length - 1; i++) {
+                if (comparator.compare((T)tArray[i],(T)tArray[j]) < 0) {
                     temp = (T)tArray[j];
                     tArray[j] = tArray[i];
                     tArray[i] = temp;

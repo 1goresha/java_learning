@@ -1,5 +1,7 @@
 package com.company.jenericArrayList;
 
+import java.util.Comparator;
+
 public class LinkedList<T extends Comparable<T>> implements List<T> {
     private Node top;
     private Node tail;
@@ -154,18 +156,35 @@ public class LinkedList<T extends Comparable<T>> implements List<T> {
     }
 
         @Override
-    public <T extends Comparable<T>> void sort() {
+    public void sort() {
         Node current;
         Node previous;
         for (int i = 1; i <= this.count; i++) {
             current = top;
-            previous = this.getPrevious(current);
             for (int j = i; j <= this.count; j++) {
-                if (previous.compareTo(current) < 0) {
+                previous = this.getPrevious(current);
+//                previous = current;//обновим указатель на предыдущий Node
+                if (previous.compareTo(current) > 0) {
                     this.swap(previous, current);
+                    current = previous;//обновим указатель текущего Node
                 }
-                current = previous;//обновим указатель текущего Node
-                previous = current;//обновим указатель на предыдущий Node
+                current = current.getNext();//а здесь из обновленного текущего Node заберем следущий тукущий Node после иттерации
+            }
+        }
+    }
+
+
+    public void sort(Comparator<Node<T>> comparator) {
+        Node current;
+        Node previous;
+        for (int i = 1; i <= this.count; i++) {
+            current = top;
+            for (int j = i; j <= this.count; j++) {
+                previous = this.getPrevious(current);
+                if (comparator.compare(current,previous) < 0) {
+                    this.swap(previous, current);
+                    current = previous;//обновим указатель текущего Node
+                }
                 current = current.getNext();//а здесь из обновленного текущего Node заберем следущий тукущий Node после иттерации
             }
         }

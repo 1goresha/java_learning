@@ -1,5 +1,7 @@
 package com.company.jenericArrayList;
 
+import java.util.Comparator;
+
 public interface List <V>{
     void add(V element);
     void addToBegin(V element);

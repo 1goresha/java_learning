@@ -164,18 +164,17 @@ public class LinkedIntegerList implements IntegerList {
 
     @Override
     public void sort() {
-        Node current;
-        Node temp;
-        Node previous;
+       Node current;
+       Node previous;
         for (int i = 1; i <= this.count; i++) {
             current = top;
-            previous = this.getPrevious(current);
-            for (int j = i; j <= this.count ; j++) {
+            for (int j = i; j <= this.count; j++) {
+                previous = this.getPrevious(current);
+//                previous = current;//обновим указатель на предыдущий Node
                 if (previous.getValue() > current.getValue()) {
                     this.swap(previous, current);
+                    current = previous;//обновим указатель текущего Node
                 }
-                current = previous;//обновим указатель текущего Node
-                previous = current;//обновим указатель на предыдущий Node
                 current = current.getNext();//а здесь из обновленного текущего Node заберем следущий тукущий Node после иттерации
             }
         }
