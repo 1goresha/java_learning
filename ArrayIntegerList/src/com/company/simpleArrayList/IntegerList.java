@@ -1,4 +1,4 @@
-package com.company;
+package com.company.simpleArrayList;
 
 public interface IntegerList {
     void add(int element);

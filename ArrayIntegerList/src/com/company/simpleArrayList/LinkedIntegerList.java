@@ -1,4 +1,4 @@
-package com.company;
+package com.company.simpleArrayList;
 
 public class LinkedIntegerList implements IntegerList {
     private Node top;
@@ -32,7 +32,7 @@ public class LinkedIntegerList implements IntegerList {
         return previous;
     }
 
-    public void swap(Node a, Node b) {
+    private void swap(Node a, Node b) {
         Node previousA = this.getPrevious(a);
         Node previousB = this.getPrevious(b);
         Node nextA = a.getNext();
@@ -77,7 +77,7 @@ public class LinkedIntegerList implements IntegerList {
 
     }
 
-    public Node getNode(int index) {
+    private Node getNode(int index) {
         Node current = top;
         int thisCount = 1;
         while (thisCount <= this.count) {
@@ -179,15 +179,6 @@ public class LinkedIntegerList implements IntegerList {
                 current = current.getNext();//а здесь из обновленного текущего Node заберем следущий тукущий Node после иттерации
             }
         }
-
-//        Node current;
-//        Node previous;
-//
-//        for (int i = 1; i <= this.count; i ++){
-//            for (int j = i; j <=this.count; j++){
-//            }
-//        }
-
     }
 
     @Override

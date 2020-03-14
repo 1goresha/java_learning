@@ -1,16 +1,19 @@
-package com.company;
+package com.company.jenericArrayList;
 
-public class ArrayIntegerList implements IntegerList {
-    private int[] array;
+import java.lang.reflect.Type;
+import java.util.Objects;
+
+public class ArrayList<T> implements List<T> {
+    public T[] array;
     private int count;
 
-    public ArrayIntegerList(int size) {
-        array = new int[size];
+    public ArrayList(int size) {
+        array = (T[]) new Object[size];
         count = 0;
     }
 
     @Override
-    public void add(int element) {
+    public void add(T element) {
         if (count >= this.array.length) {
             System.out.println("превышен максимальный размер массива");
             return;
@@ -20,13 +23,12 @@ public class ArrayIntegerList implements IntegerList {
     }
 
     @Override
-    public void addToBegin(int element) {
+    public void addToBegin(T element) {
         if (count >= this.array.length) {
             System.out.println("превышен максимальный размер массива");
             return;
         }
         for (int i = 0; i < array.length - 1; i++) {
-//            if ((array.length - i - 2) == 0) return;
             array[array.length - i - 1] = array[array.length - i - 2];
         }
         array[0] = element;
@@ -34,18 +36,18 @@ public class ArrayIntegerList implements IntegerList {
     }
 
     @Override
-    public int get(int index) {
+    public T get(int index) {
         return array[index];
     }
 
     @Override
-    public void insert(int element, int index) {
+    public void insert(T element, int index) {
         array[index] = element;
     }
 
     @Override
     public void reverse() {
-        int temp;
+        T temp;
         for (int i = 0; i < (array.length - 1) / 2; i++) {
             temp = array[array.length - i - 1];
             array[array.length - i - 1] = array[i];
@@ -59,22 +61,24 @@ public class ArrayIntegerList implements IntegerList {
         return count;
     }
 
+
     @Override
-    public void sort() {
-        int temp;
-        for (int j = 0; j < array.length; j++) {
-            for (int i = j; i < array.length; i++) {
-                if (array[j] > array[i]) {
-                    temp = array[j];
-                    array[j] = array[i];
-                    array[i] = temp;
+    public <T extends Comparable<T>> void sort() {
+        T temp;
+        Object[] tArray = this.array;
+        for (int j = 0; j < array.length - 1; j++) {
+            for (int i = j; i < array.length - 1; i++) {
+                if (((T)tArray[i]).compareTo((T)tArray[j]) < 0) {
+                    temp = (T)tArray[j];
+                    tArray[j] = tArray[i];
+                    tArray[i] = temp;
                 }
             }
         }
     }
 
     @Override
-    public boolean contains(int element) {
+    public boolean contains(T element) {
         for (int i = 0; i < array.length - 1; i++) {
             if (array[i] == element) return true;
         }
@@ -82,7 +86,7 @@ public class ArrayIntegerList implements IntegerList {
     }
 
     @Override
-    public int indexOf(int element) {
+    public int indexOf(T element) {
         for (int i = 0; i < array.length - 1; i++) {
             if (array[i] == element) return i;
         }

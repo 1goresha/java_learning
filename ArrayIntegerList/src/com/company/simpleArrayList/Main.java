@@ -1,4 +1,4 @@
-package com.company;
+package com.company.simpleArrayList;
 
 public class Main {
 
@@ -26,8 +26,8 @@ public class Main {
 //        boolean b = linkedIntegerList.contains(3);
 //        int c = linkedIntegerList.indexOf(6);
         linkedIntegerList.reverse();
-        Node a = linkedIntegerList.getNode(linkedIntegerList.indexOf(4));
-        Node b = linkedIntegerList.getNode(linkedIntegerList.indexOf(3));
+//        Node a = linkedIntegerList.getNode(linkedIntegerList.indexOf(4));
+//        Node b = linkedIntegerList.getNode(linkedIntegerList.indexOf(3));
 //        linkedIntegerList.swap(a,b);
         linkedIntegerList.sort();
         int i = 0;

@@ -1,6 +1,4 @@
-package com.company;
-
-import java.util.Objects;
+package com.company.simpleArrayList;
 
 public class Node {
     private int value;
