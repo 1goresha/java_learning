@@ -158,20 +158,19 @@ public class LinkedList<T extends Comparable<T>> implements List<T> {
     private void sort0(Comparator<Node<T>> comparator) {             //сделал ненужные новороты, без которых и так все прекрасно работает :)
         Node current;                                               //позволило нам сократить дублирование кода
         Node previous;
+        int compareResult = 0;
         for (int i = 1; i <= this.count; i++) {
             current = top;
             for (int j = i; j <= this.count; j++) {
                 previous = this.getPrevious(current);
                 if (comparator == null) {
-                    if (previous.compareTo(current) > 0) {
-                        this.swap(previous, current);
-                        current = previous;//обновим указатель текущего Node
-                    }
+                    compareResult = previous.compareTo(current);
                 } else {
-                    if (comparator.compare(current, previous) < 0) {
-                        this.swap(previous, current);
-                        current = previous;//обновим указатель текущего Node
-                    }
+                    compareResult = comparator.compare(previous,current);
+                }
+                if (compareResult > 0){
+                    this.swap(previous, current);
+                    current = previous;//обновим указатель текущего Node
                 }
                 current = current.getNext();//а здесь из обновленного текущего Node заберем следущий тукущий Node после иттерации
             }
