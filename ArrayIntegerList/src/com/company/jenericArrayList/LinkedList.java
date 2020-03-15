@@ -155,39 +155,45 @@ public class LinkedList<T extends Comparable<T>> implements List<T> {
         return this.count;
     }
 
-        @Override
-    public void sort() {
+    private void sort0(Comparator<Node<T>> comparator){             //сделал ненужные новороты, без которых и так все прекрасно работает :)
         Node current;
         Node previous;
-        for (int i = 1; i <= this.count; i++) {
-            current = top;
-            for (int j = i; j <= this.count; j++) {
-                previous = this.getPrevious(current);
+        if (comparator == null){
+            for (int i = 1; i <= this.count; i++) {
+                current = top;
+                for (int j = i; j <= this.count; j++) {
+                    previous = this.getPrevious(current);
 //                previous = current;//обновим указатель на предыдущий Node
-                if (previous.compareTo(current) > 0) {
-                    this.swap(previous, current);
-                    current = previous;//обновим указатель текущего Node
+                    if (previous.compareTo(current) > 0) {
+                        this.swap(previous, current);
+                        current = previous;//обновим указатель текущего Node
+                    }
+                    current = current.getNext();//а здесь из обновленного текущего Node заберем следущий тукущий Node после иттерации
                 }
-                current = current.getNext();//а здесь из обновленного текущего Node заберем следущий тукущий Node после иттерации
+            }
+        }else{
+            for (int i = 1; i <= this.count; i++) {
+                current = top;
+                for (int j = i; j <= this.count; j++) {
+                    previous = this.getPrevious(current);
+                    if (comparator.compare(current,previous) < 0) {
+                        this.swap(previous, current);
+                        current = previous;//обновим указатель текущего Node
+                    }
+                    current = current.getNext();//а здесь из обновленного текущего Node заберем следущий тукущий Node после иттерации
+                }
             }
         }
     }
 
+        @Override
+    public void sort() {
+        sort0(null);
+    }
+
 
     public void sort(Comparator<Node<T>> comparator) {
-        Node current;
-        Node previous;
-        for (int i = 1; i <= this.count; i++) {
-            current = top;
-            for (int j = i; j <= this.count; j++) {
-                previous = this.getPrevious(current);
-                if (comparator.compare(current,previous) < 0) {
-                    this.swap(previous, current);
-                    current = previous;//обновим указатель текущего Node
-                }
-                current = current.getNext();//а здесь из обновленного текущего Node заберем следущий тукущий Node после иттерации
-            }
-        }
+        sort0(comparator);
     }
 
     @Override
