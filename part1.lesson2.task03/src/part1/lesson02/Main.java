@@ -34,15 +34,15 @@ public class Main {
         }
 
 
-        SortByMethod.sort(comparatorByName, personArrayList, comparatorByName, comparatorByAge);
+        SortByMethod.sort(comparatorByName, personArrayList);
 //        for (Person p : personArrayList) {
 //            System.out.println(p);
 //        }
-        SortByMethod.sort(comparatorByAge, personArrayList, comparatorByName, comparatorByAge);
+        SortByMethod.sort(comparatorByAge, personArrayList);
 //        for (Person p : personArrayList) {
 //            System.out.println(p);
 //        }
-        SortByMethod.sort(comparatorBySex, personArrayList, comparatorByName, comparatorByAge);
+        SortByMethod.sort(comparatorBySex, personArrayList);
         SortByMethod.checkingForTheSameNameAndAge(personArrayList);
 
         for (Person p : personArrayList) {

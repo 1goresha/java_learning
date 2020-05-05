@@ -10,7 +10,7 @@ public class SortByMethod {
     static long timeFinish;
 
 
-    static void sort(Comparator<Person> comparatorBy, ArrayList<Person> personArrayList, Comparator<Person> comparatorByName, Comparator<Person> comparatorByAge) {
+    static void sort(Comparator<Person> comparatorBy, ArrayList<Person> personArrayList) {
         timeStart = System.nanoTime();
         for (int i = personArrayList.size() - 1; i >= 0; i--) {
             for (int j = 0; j < i; j++) {
