@@ -8,20 +8,20 @@ import java.util.List;
 import java.util.Random;
 
 public class FilesUtil {
-    private List<String> stringList;
-    private Random random;
 
-    public FilesUtil() {
-        this.stringList = new ArrayList<>();
-        random = new Random();
-    }
-
-    public void getFiles(String path, int quantity, int size, String[] words, int probability) {
-        File file = new File(path);
-        try (FileOutputStream fileOutputStream = new FileOutputStream(file)) {
+    public void getFiles(String path) {
+//        File file = new File(path);
+        try (FileOutputStream fileOutputStream = new FileOutputStream(path)) {
             BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream);
-            for (int i = 0; i <= quantity; i++) {
-
+//            for (int i = 0; i <= quantity; i++) {
+//
+//            }
+            List<String> list = this.generateParagraph();
+            byte[] bytes;
+            for (String s : list
+            ) {
+                bytes = s.getBytes();
+                fileOutputStream.write(bytes);
             }
         } catch (FileNotFoundException e) {
             System.out.println(e.getMessage());
@@ -30,22 +30,53 @@ public class FilesUtil {
         }
     }
 
-    public void generateWord() {
-        int randomCount = this.generateRandomInRange(1, 15);
+    public String generateWord() {
+        int randomCharCount = this.generateRandomInRange(1, 15);
         char randomChar;
         String word = "";
-        for (int i = 1; i <= randomCount; i++) {
-            randomChar = (char) this.generateRandomInRange(65, 122);
+        for (int i = 1; i <= randomCharCount; i++) {
+            randomChar = (char) this.generateRandomInRange(97, 122);
             word += randomChar;
         }
+        return word + " ";
     }
 
-    private List<String> generateSentence() {
-        return null;
+    public List<String> generateSentence() {
+        int count = 0;
+        int randomWordCount = this.generateRandomInRange(1, 15);
+        List<String> list = new ArrayList<>();
+        for (int i = 1; i <= randomWordCount; i++) {
+            list.add(this.generateWord());
+            count += list.get(i).length();
+            if (count >= 60) {
+                list.add("\n");
+            }
+        }
+        String s = list.get(1).substring(0, 1).toUpperCase();
+        list.set(1, s);
+        int randomPunkctuation = this.generateRandomInRange(0, 100);
+        if (randomPunkctuation >= 0 && randomPunkctuation <= 33) {
+            list.add("!");
+            list.add(" ");
+        } else if (randomPunkctuation >= 34 && randomPunkctuation <= 66) {
+            list.add("?");
+            list.add(" ");
+        } else if (randomPunkctuation >= 67 && randomPunkctuation <= 100) {
+            list.add(".");
+            list.add(" ");
+        }
+        return list;
     }
 
-    private List<List<String>> generateParagraph() {
-        return null;
+    public List<String> generateParagraph() {
+        List<String> lists = new ArrayList<>();
+        int randomSentense = this.generateRandomInRange(1, 20);
+        for (int i = 1; i <= randomSentense; i++) {
+            lists.addAll(generateSentence());
+        }
+        lists.add("\n");
+        lists.add("\r");
+        return lists;
     }
 
     private int generateRandomInRange(int min, int max) {
