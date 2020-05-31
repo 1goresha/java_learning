@@ -9,27 +9,32 @@ import java.util.Random;
 
 public class FilesUtil {
 
-    public void getFiles(String path) {
+    public void getFiles(String path, int quantity, int size) {
         int countOfChar = 0;
-//        File file = new File(path);
-        try (FileOutputStream fileOutputStream = new FileOutputStream(path)) {
-            BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream);
-//            for (int i = 0; i <= quantity; i++) {
-//
-//            }
-            List<String> list = this.generateParagraph();
-            byte[] bytes;
-            for (String s : list) {
-                for (int b : s.getBytes()) {
-                    fileOutputStream.write(b);
-                    countOfChar++;
-                    if (countOfChar >= 60){
-                        fileOutputStream.write('\n');
-                        countOfChar = 0;
+        int countOfSize = 0;
+        String fileName = "text";
+        try {
+            for (int i = 0; i <= quantity; i++) {
+                FileOutputStream fileOutputStream = new FileOutputStream(path + fileName + i + ".txt");
+                List<String> list = this.generateText(size);
+                label:
+                for (String s : list) {
+                    for (int b : s.getBytes()) {
+                        fileOutputStream.write(b);
+                        countOfChar++;
+                        countOfSize++;
+                        if (countOfChar >= 60) {
+                            fileOutputStream.write('\n');
+                            countOfSize++;
+                            countOfChar = 0;
+                        }
+                        if (countOfSize >= size) {
+                            countOfSize = 0;
+                            break label;
+//                            return;
+                        }
                     }
                 }
-//                bytes = s.getBytes();
-//                fileOutputStream.write(bytes);
             }
         } catch (FileNotFoundException e) {
             System.out.println("FileNotFoundException");
@@ -87,13 +92,32 @@ public class FilesUtil {
         return (int) (Math.random() * ++max) + min;
     }
 
-    public String[] generateArrayOfString(){
+    public String[] generateArrayOfString() {
         int randomWord = this.generateRandomInRange(1, 1000);
         String[] arr = new String[randomWord];
-        for (int i = 0; i < randomWord; i++){
+        for (int i = 0; i < randomWord; i++) {
             arr[i] = " >>>word" + i + "<<< ";
         }
         return arr;
+    }
+
+    public List<String> generateText(int size) {
+        int textCount = 0;
+        List<String> current = this.generateParagraph();
+        List<String> next = this.generateParagraph();
+        List<String> finalList = new ArrayList<>();
+        while (textCount <= size) {
+            finalList.addAll(current);
+            finalList.addAll(next);
+            for (String s : finalList) {
+                for (int i : s.getBytes()) {
+                    textCount++;
+                }
+            }
+//            finalList.addAll(current);
+//            finalList.addAll(next);
+        }
+        return finalList;
     }
 
 }
