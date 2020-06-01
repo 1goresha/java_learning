@@ -9,32 +9,35 @@ import java.util.Random;
 
 public class FilesUtil {
 
-    public void getFiles(String path, int quantity, int size) {
+    public void getFiles(String path, int quantity, int size, String[] words, int probability) {
         int countOfChar = 0;
         int countOfSize = 0;
         String fileName = "text";
         try {
-            for (int i = 0; i <= quantity; i++) {
+            for (int i = 1; i <= quantity; i++) {
                 FileOutputStream fileOutputStream = new FileOutputStream(path + fileName + i + ".txt");
-                List<String> list = this.generateText(size);
+                List<String> list = this.generateText(size, words, probability);
                 label:
-                for (String s : list) {
-                    for (int b : s.getBytes()) {
-                        fileOutputStream.write(b);
-                        countOfChar++;
-                        countOfSize++;
-                        if (countOfChar >= 60) {
-                            fileOutputStream.write('\n');
+                while (countOfSize <= size) {
+                    for (String s : list) {
+                        for (int b : s.getBytes()) {
+                            if (countOfChar >= 60) {
+                                fileOutputStream.write('\n');
+                                countOfSize++;
+                                countOfChar = 0;
+                            }
+                            if (countOfSize >= size) {
+                                countOfSize = 0;
+                                fileOutputStream.close();
+                                break label;
+                            }
+                            fileOutputStream.write(b);
+                            countOfChar++;
                             countOfSize++;
-                            countOfChar = 0;
-                        }
-                        if (countOfSize >= size) {
-                            countOfSize = 0;
-                            break label;
-//                            return;
                         }
                     }
                 }
+                countOfSize = 0;
             }
         } catch (FileNotFoundException e) {
             System.out.println("FileNotFoundException");
@@ -43,7 +46,7 @@ public class FilesUtil {
         }
     }
 
-    public String generateWord() {
+    private String generateWord() {
         int randomCharCount = this.generateRandomInRange(1, 15);
         char randomChar;
         String word = "";
@@ -54,11 +57,17 @@ public class FilesUtil {
         return word + " ";
     }
 
-    public List<String> generateSentence() {
+    private List<String> generateSentence(String[] words, int probability) {
         int randomWordCount = this.generateRandomInRange(1, 15);
+        int randomIndex = this.generateRandomInRange(0, words.length - 1);
         List<String> wordList = new ArrayList<>();
+        boolean sw = true;
         for (int i = 0; i < randomWordCount; i++) {
             wordList.add(this.generateWord());
+            if (Math.random() <= (double) 1 / probability && sw) {
+                wordList.add(words[randomIndex]);
+                sw = false;
+            }
         }
         String temp = wordList.get(0).substring(0, 1).toUpperCase();
         wordList.set(0, temp);
@@ -76,11 +85,11 @@ public class FilesUtil {
         return wordList;
     }
 
-    public List<String> generateParagraph() {
+    private List<String> generateParagraph(String[] words, int probability) {
         List<String> sentencesList = new ArrayList<>();
         int randomSentence = this.generateRandomInRange(1, 20);
         for (int i = 0; i < randomSentence; i++) {
-            sentencesList.addAll(generateSentence());
+            sentencesList.addAll(generateSentence(words, probability));
         }
         String s = sentencesList.get(sentencesList.size() - 1) + "\r\n";
         sentencesList.set(sentencesList.size() - 1, s);
@@ -92,30 +101,16 @@ public class FilesUtil {
         return (int) (Math.random() * ++max) + min;
     }
 
-    public String[] generateArrayOfString() {
-        int randomWord = this.generateRandomInRange(1, 1000);
-        String[] arr = new String[randomWord];
-        for (int i = 0; i < randomWord; i++) {
-            arr[i] = " >>>word" + i + "<<< ";
-        }
-        return arr;
-    }
-
-    public List<String> generateText(int size) {
+    private List<String> generateText(int size, String[] words, int probability) {
         int textCount = 0;
-        List<String> current = this.generateParagraph();
-        List<String> next = this.generateParagraph();
         List<String> finalList = new ArrayList<>();
-        while (textCount <= size) {
-            finalList.addAll(current);
-            finalList.addAll(next);
+        while (textCount < size) {
+            finalList.addAll(this.generateParagraph(words, probability));
             for (String s : finalList) {
-                for (int i : s.getBytes()) {
+                for (int i : s.getBytes()) {//очень редко выкидывает NullPointerException, хз почему...
                     textCount++;
                 }
             }
-//            finalList.addAll(current);
-//            finalList.addAll(next);
         }
         return finalList;
     }
