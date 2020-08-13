@@ -6,16 +6,17 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import static ru.igoresha.spring.MusicGenre.CLASSICAL;
 import static ru.igoresha.spring.MusicGenre.ROCK;
 
-@Component
+//@Component
 public class MusicPlayer {
     private List<Music> musicList = new ArrayList<>();
-    private RockMusic rockMusic;
-    private ClassicalMusic classicalMusic;
-
+    private Music rockMusic;
+    private Music classicalMusic;
+    private Random random = new Random();
 
     private String name;
     private int volume;
@@ -24,11 +25,12 @@ public class MusicPlayer {
 
     }
 
-    @Autowired
-    public MusicPlayer(RockMusic rockMusic, ClassicalMusic classicalMusic) {
+//    @Autowired
+    public MusicPlayer(@Qualifier("rockMusic") Music rockMusic, @Qualifier("classicalMusic") Music classicalMusic) {
         this.rockMusic = rockMusic;
         this.classicalMusic = classicalMusic;
     }
+
 
     public MusicPlayer(List<Music> musicList) {
         this.musicList = musicList;
@@ -71,16 +73,19 @@ public class MusicPlayer {
 
     }
 
-    public void playSong(Enum musicGenre) {
+    public void playSong() {
 //        System.out.println(rockMusic.getSong());
 //        System.out.println(classicalMusic.getSong());
 
-        if (musicGenre.equals(ROCK)){
-            System.out.println(rockMusic.getSong());
-        }else if (musicGenre.equals(CLASSICAL)){
-            System.out.println(classicalMusic.getSong());
-        }else{
-            System.out.println("null");
-        }
+//        if (musicGenre.equals(ROCK)){
+//            System.out.println(rockMusic.getSong());
+//        }else if (musicGenre.equals(CLASSICAL)){
+//            System.out.println(classicalMusic.getSong());
+//        }else{
+//            System.out.println("null");
+//        }
+
+        int indexOfMusic = random.nextInt(musicList.size());
+        System.out.println(musicList.get(indexOfMusic).getSong());
     }
 }

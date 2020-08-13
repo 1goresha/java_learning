@@ -7,7 +7,7 @@ import java.util.Random;
 import static ru.igoresha.spring.MusicGenre.CLASSICAL;
 import static ru.igoresha.spring.MusicGenre.ROCK;
 
-@Component
+//@Component
 public class RockMusic implements Music {
 
     private String[] songs = {"Knock the heaven door", "we will rock you", "final countdown"};
@@ -15,7 +15,7 @@ public class RockMusic implements Music {
     @Override
     public String getSong() {
         Random r = new Random();
-        int randomSongNumber = r.nextInt(3);
+        int randomSongNumber = r.nextInt(songs.length);
         return songs[randomSongNumber];
     }
 }

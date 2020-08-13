@@ -8,12 +8,9 @@ import java.util.Random;
 import static ru.igoresha.spring.MusicGenre.CLASSICAL;
 import static ru.igoresha.spring.MusicGenre.ROCK;
 
-@Component
+//@Component
 public class ClassicalMusic implements Music{
 
-    private ClassicalMusic(){
-
-    }
 
 //    public static ClassicalMusic getClassicalMusic() {
 //        return new ClassicalMusic();
@@ -32,7 +29,7 @@ public class ClassicalMusic implements Music{
     @Override
     public String getSong() {
         Random r = new Random();
-        int randomSongNumber = r.nextInt(3);
+        int randomSongNumber = r.nextInt(songs.length);
         return songs[randomSongNumber];
     }
 }
