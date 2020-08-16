@@ -8,16 +8,25 @@
     <title>Document</title>
 </head>
 <body>
+<div>
+    <a href="?sort=true&by=age&desc=false">(sort by age)</a>
+    <a href="?sort=true&by=age&desc=true">(sort by age desc)</a>
+    <a href="?sort=true&by=id&desc=false">(sort by id)</a>
+    <a href="?sort=true&by=id&desc=true">(sort by id desc)</a>
+    <a href="?">(show all)</a>
+</div>
 <table>
     <tr>
+        <th>id</th>
         <th>имя</th>
         <th>фамилия</th>
         <th>возраст</th>
     </tr>
     <#list users as user>
     <tr>
-        <td>${user.first_name}</td>
-        <td>${user.last_name}</td>
+        <td>${user.id}</td>
+        <td>${user.firstName}</td>
+        <td>${user.lastName}</td>
         <td>${user.age}</td>
     </tr>
     </#list>

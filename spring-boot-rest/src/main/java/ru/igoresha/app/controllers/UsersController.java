@@ -1,51 +1,52 @@
 package ru.igoresha.app.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
 import ru.igoresha.app.models.User;
+import ru.igoresha.app.repositories.UsersRepository;
+import ru.igoresha.app.services.UserService;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Controller
+@RequestMapping (value = "/users")
 public class UsersController {
 
-    @GetMapping("/users")
-    public String getHello(ModelMap model){
-        User igor = User.builder()
-                .first_name("Игорь")
-                .last_name("Дерябин")
-                .age(30)
-                .build();
+    @Autowired
+    private UserService userService;
 
-        User slava = User.builder()
-                .first_name("Вячеслав")
-                .last_name("Дерябин")
-                .age(33)
-                .build();
-
-        User stas = User.builder()
-                .first_name("Станислав")
-                .last_name("Алханов")
-                .age(30)
-                .build();
-
-
-        User marsel = User.builder()
-                .first_name("Марсель")
-                .last_name("Сидиков")
-                .age(27)
-                .build();
+    @GetMapping
+    public String getUsers(@RequestParam(value = "sort", required = false) Boolean sort,
+                           @RequestParam(value = "by", required = false) String by,
+                           @RequestParam(value = "desc", required = false) Boolean desc,
+                           ModelMap model){
 
         List<User> users = new ArrayList<>();
-        users.add(igor);
-        users.add(slava);
-        users.add(stas);
-        users.add(marsel);
-
+        users = this.userService.getUsers(sort, by, desc);
         model.addAttribute("users", users);
-
-        return "hello";
+        return "users";
     }
+
+//    @GetMapping("/users/search")
+//    public String getSearchByKeyWord(@RequestParam("q") String query, ModelMap model){
+//        List<User> users = this.usersRepository.findUserByFirstNameContainsIgnoreCase(query);
+//        model.addAttribute("users", users);
+//        return "users";
+//    }
+
+    @GetMapping("/search.json")
+    @ResponseBody
+    public List<User> getSearchByKeyWord(@RequestParam("q") String query){
+        return this.userService.findByQuery(query);
+    }
+
+    @GetMapping("/search")
+    public String getLifeSearchPage(){
+        return "search";
+    }
+
 }
