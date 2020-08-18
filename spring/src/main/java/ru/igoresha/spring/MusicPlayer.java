@@ -14,6 +14,7 @@ import static ru.igoresha.spring.MusicGenre.ROCK;
 //@Component
 public class MusicPlayer {
     private List<Music> musicList = new ArrayList<>();
+
     private Music rockMusic;
     private Music classicalMusic;
     private Random random = new Random();

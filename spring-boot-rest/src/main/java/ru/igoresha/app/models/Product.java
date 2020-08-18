@@ -1,22 +1,19 @@
 package ru.igoresha.app.models;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
-@Data
+@Getter
+@Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
+@EqualsAndHashCode
 @Builder
-
+@Entity
+@Table(name = "products")
 public class Product {
 
     @Id
@@ -25,4 +22,5 @@ public class Product {
 
     private String name;
     private Double price;
+//    private String price;
 }

@@ -25,14 +25,14 @@ public class ProductsController {
     }
 
     @PostMapping
-    public String addProducts(Product product){
+    public String addProducts(Product product){// Post форма автоматически сконвертируется в Product объект
         this.productsService.addProduct(product);
         return "redirect:/products";
     }
 
     @PostMapping("/json")
-    @ResponseBody
-    public List<Product> addProductByJson(@RequestBody Product product){
+    @ResponseBody//ответ уйдет в Json формате
+    public List<Product> addProductByJson( Product product){  //преобразование из json в объект
         this.productsService.addProduct(product);
         return this.productsService.getAllProducts();
     }

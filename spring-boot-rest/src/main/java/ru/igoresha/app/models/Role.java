@@ -1,5 +1,5 @@
 package ru.igoresha.app.models;
 
 public enum Role {
-    ADMIN, GUEST
+    ADMIN, USER
 }
