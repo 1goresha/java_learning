@@ -42,9 +42,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .formLogin()
                 .loginPage("/signIn")
                 .usernameParameter("login")
-                .passwordParameter("passwordHash")
+                .passwordParameter("password")
                 .defaultSuccessUrl("/")
                 .failureUrl("/signIn?error")
                 .permitAll();
-    }
+}
 }

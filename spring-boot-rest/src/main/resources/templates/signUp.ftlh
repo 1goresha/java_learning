@@ -18,7 +18,7 @@
         <br>
         <input type="text" name="login" placeholder="Логин">
         <br>
-        <input type="text" name="passwordHash" placeholder="Пароль">
+        <input type="text" name="password" placeholder="Пароль">
         <br>
         <input type="submit" value="ОК">
     </form>

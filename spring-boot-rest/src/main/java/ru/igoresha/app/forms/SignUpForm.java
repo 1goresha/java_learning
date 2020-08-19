@@ -11,6 +11,6 @@ public class SignUpForm {
     private String lastName;
     private Integer age;
     private String login;
-    private String passwordHash;
+    private String password;
 
 }

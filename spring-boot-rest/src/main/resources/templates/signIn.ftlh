@@ -11,7 +11,7 @@
 <div>
     <form method="post">
         <input type="text" name="login" placeholder="Логин">
-        <input type="text" name="passwordHash" placeholder="Пароль">
+        <input type="text" name="password" placeholder="Пароль">
         <input type="submit" value="ОК">
     </form>
 </div>

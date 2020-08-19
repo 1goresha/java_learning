@@ -24,7 +24,7 @@ public class User {
     @Column(length = 1000)
     private String login;
     private Integer age;
-    private String passwordHash;
+    private String password;
 
     @Enumerated(EnumType.STRING)
     private Role role;
