@@ -32,7 +32,7 @@ public class ProductsController {
 
     @PostMapping("/json")
     @ResponseBody//ответ уйдет в Json формате
-    public List<Product> addProductByJson( Product product){  //преобразование из json в объект
+    public List<Product> addProductByJson(@RequestBody Product product){  //преобразование из json в объект
         this.productsService.addProduct(product);
         return this.productsService.getAllProducts();
     }

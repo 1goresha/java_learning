@@ -46,5 +46,5 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .defaultSuccessUrl("/")
                 .failureUrl("/signIn?error")
                 .permitAll();
-}
+    }
 }
