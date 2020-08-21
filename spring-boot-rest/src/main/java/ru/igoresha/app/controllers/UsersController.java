@@ -40,7 +40,7 @@ public class UsersController {
 
     @GetMapping("/search.json")
     @ResponseBody//ответ уйдет в Json формате
-    public List<User> getSearchByKeyWord(@RequestParam("q") String query){
+    public List<User> getSearchByKeyWord(@RequestParam(value = "q") String query){
         return this.userService.findByQuery(query);
     }
 

@@ -1,11 +1,13 @@
 package ru.igoresha.app.security;
 
+import org.hibernate.event.internal.DefaultPreLoadEventListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,6 +16,7 @@ import ru.igoresha.app.models.Role;
 
 
 @Configuration
+@EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -36,8 +39,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers("/").permitAll()
                 .antMatchers("/signUp").permitAll()
                 .antMatchers("/signIn").permitAll()
-                .antMatchers("/profile").authenticated()
+                .antMatchers("/users").hasAuthority(Role.ADMIN.toString())
                 .antMatchers("/products/**").hasAuthority(Role.USER.toString())
+                .antMatchers("/profile").authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/signIn")

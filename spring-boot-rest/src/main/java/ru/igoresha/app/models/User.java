@@ -3,14 +3,15 @@ package ru.igoresha.app.models;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
+@Builder
 @Getter
 @Setter
 @ToString
+@EqualsAndHashCode
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode
-@Builder
 @Entity
 @Table(name = "service_user")
 public class User {
@@ -23,9 +24,12 @@ public class User {
 
     @Column(length = 1000)
     private String login;
-    private String password;
     private Integer age;
+    private String passwordHash;
 
-    @Enumerated(EnumType.STRING)
+    private LocalDateTime birthDateTime;
+
+    @Enumerated(value = EnumType.STRING)
     private Role role;
+
 }

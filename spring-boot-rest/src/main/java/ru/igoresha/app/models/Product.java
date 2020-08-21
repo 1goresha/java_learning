@@ -4,23 +4,16 @@ package ru.igoresha.app.models;
 import lombok.*;
 
 import javax.persistence.*;
-
-@Getter
-@Setter
-@ToString
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode
-@Builder
 @Entity
-@Table(name = "products")
+@Builder
 public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String name;
     private Double price;
-//    private String price;
 }

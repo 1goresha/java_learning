@@ -21,8 +21,17 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
         Optional<User> userCandidate = usersRepository.findFirstByLogin(login);
         if (userCandidate.isPresent()){
+            if (userCandidate.get().getPasswordHash().equals("$2a$08$P7MohxFaUTijgOhJeH3/5.QLldXO0aoiqUk3suJ/LsGEc8FB1K/o6")){
+                System.out.println("есть сходство");
+            }
+            else
+            {
+                System.out.println("нет сходства");
+            }
+            System.out.println(userCandidate.get().getPasswordHash());
             return new UserDetailsImpl(userCandidate.get());
         }
+        System.out.println(login + "не найден");
         throw new UsernameNotFoundException("логин " + login + " не найден");
     }
 }
