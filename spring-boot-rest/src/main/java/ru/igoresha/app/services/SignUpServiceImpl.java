@@ -25,8 +25,8 @@ public class SignUpServiceImpl implements SignUpService {
                 .firstName(signUpForm.getFirstName())
                 .lastName(signUpForm.getLastName())
                 .login(signUpForm.getLogin().toLowerCase())
+                .passwordHash(passwordEncoder.encode(signUpForm.getPassword()))
                 .age(signUpForm.getAge())
-                .password(passwordEncoder.encode(signUpForm.getPassword()))
                 .role(Role.USER)
                 .build();
 

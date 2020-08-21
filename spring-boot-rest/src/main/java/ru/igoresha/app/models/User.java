@@ -25,7 +25,7 @@ public class User {
     @Column(length = 1000)
     private String login;
     private Integer age;
-    private String password;
+    private String passwordHash;
 
     private LocalDateTime birthDateTime;
 
