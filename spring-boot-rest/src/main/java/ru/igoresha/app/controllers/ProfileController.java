@@ -1,8 +1,8 @@
 package ru.igoresha.app.controllers;
 
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,6 +12,7 @@ import ru.igoresha.app.security.UserDetailsImpl;
 
 @Controller
 @RequestMapping(value = "/profile")
+@PreAuthorize(value = "isAuthenticated()")
 public class ProfileController {
 
     @GetMapping

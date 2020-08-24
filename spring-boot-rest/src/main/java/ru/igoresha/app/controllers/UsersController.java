@@ -1,19 +1,18 @@
 package ru.igoresha.app.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import ru.igoresha.app.models.User;
-import ru.igoresha.app.repositories.UsersRepository;
 import ru.igoresha.app.services.UserService;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 @RequestMapping (value = "/users")
+@PreAuthorize(value = "hasAuthority('ADMIN')")
 public class UsersController {
 
     @Autowired
@@ -25,8 +24,7 @@ public class UsersController {
                            @RequestParam(value = "desc", required = false) Boolean desc,
                            ModelMap model){
 
-        List<User> users = new ArrayList<>();
-        users = this.userService.getUsers(sort, by, desc);
+        List<User> users = this.userService.getUsers(sort, by, desc);
         model.addAttribute("users", users);
         return "users";
     }
