@@ -19,5 +19,7 @@ public interface ProductsService {
 
     Page<Product> getAllProductsPages(Pageable pageable);
 
-    Page<Product> getAllBy(String value);
+    Page<Product> getAllBy(String value, Pageable pageable);
+
+    Page<Product> getAllProductsPagesByFilter(String sort, String filter, Pageable pageable);
 }

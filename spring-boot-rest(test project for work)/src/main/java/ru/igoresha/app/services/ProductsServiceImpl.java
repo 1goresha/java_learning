@@ -42,8 +42,8 @@ public class ProductsServiceImpl implements ProductsService {
 
     @Override
     public Product get(Long id) {
-        Product product =  productsRepository.getOne(id);
-        if (product instanceof HibernateProxy){
+        Product product = productsRepository.getOne(id);
+        if (product instanceof HibernateProxy) {
             return (Product) ((HibernateProxy) product).getHibernateLazyInitializer().getImplementation();
         }
         return product;
@@ -60,7 +60,22 @@ public class ProductsServiceImpl implements ProductsService {
     }
 
     @Override
-    public Page<Product> getAllBy(String name) {
-        return productsRepository.findAllByName(name);
+    public Page<Product> getAllBy(String name, Pageable pageable) {
+        return productsRepository.findAllByName(name, pageable);
+    }
+
+    @Override
+    public Page<Product> getAllProductsPagesByFilter(String sort, String filter, Pageable pageable) {
+        switch(sort){
+            case("name") : return productsRepository.findAllByNameContains(filter, pageable);
+            case("price") :
+                try{
+                    Double d = Double.parseDouble(filter);
+                    return productsRepository.findFirstByPrice(d, pageable);
+                }catch (Exception e){
+                    return productsRepository.findAll(pageable);
+                }
+        }
+        return productsRepository.findAll(pageable);
     }
 }
