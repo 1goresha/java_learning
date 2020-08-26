@@ -6,7 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Builder
 @Getter
@@ -24,8 +24,8 @@ public class Interview {
     private Long id;
 
     private String name;
-    private LocalDateTime timeBegin;
-    private LocalDateTime timeEnd;
+    private Date timeBegin;
+    private Date timeEnd;
     private Boolean isActive;
 
 }

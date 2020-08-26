@@ -8,6 +8,7 @@ import ru.igoresha.app.models.Interview;
 import ru.igoresha.app.repositories.InterviewRepository;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Service
 public class InterviewServiceImpl implements InterviewService {
@@ -19,13 +20,13 @@ public class InterviewServiceImpl implements InterviewService {
     public Page<Interview> getPageBySortAndFilter(String sort, String filter, Pageable pageable) {
         switch(sort){
             case("name") : return interviewRepository.findAllByNameContainsOrderByNameAsc(filter, pageable);
-//            case("timeBegin") :
-//                try{
-//                    LocalDateTime localDateTime = LocalDateTime.
-//                    return interviewRepository.findAll()
-//                }catch (Exception e){
-//                    return productsRepository.findAll(pageable);
-//                }
+            case("timeBegin") :
+                try{
+                    Date date = Date
+                    return interviewRepository.findAll()
+                }catch (Exception e){
+                    return productsRepository.findAll(pageable);
+                }
         }
         return interviewRepository.findAll(pageable);
     }
