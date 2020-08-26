@@ -67,11 +67,11 @@ public class ProductsServiceImpl implements ProductsService {
     @Override
     public Page<Product> getAllProductsPagesByFilter(String sort, String filter, Pageable pageable) {
         switch(sort){
-            case("name") : return productsRepository.findAllByNameContains(filter, pageable);
+            case("name") : return productsRepository.findAllByNameContainsOrderByNameAsc(filter, pageable);
             case("price") :
                 try{
                     Double d = Double.parseDouble(filter);
-                    return productsRepository.findFirstByPrice(d, pageable);
+                    return productsRepository.findAllByPriceContainsOrderByPriceAsc(d, pageable);
                 }catch (Exception e){
                     return productsRepository.findAll(pageable);
                 }

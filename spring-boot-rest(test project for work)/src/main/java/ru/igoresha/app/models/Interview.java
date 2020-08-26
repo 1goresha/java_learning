@@ -1,6 +1,5 @@
 package ru.igoresha.app.models;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import lombok.*;
 
 import javax.persistence.Entity;
