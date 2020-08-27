@@ -22,10 +22,10 @@ public class InterviewServiceImpl implements InterviewService {
             case("name") : return interviewRepository.findAllByNameContainsOrderByNameAsc(filter, pageable);
             case("timeBegin") :
                 try{
-                    Date date = Date
-                    return interviewRepository.findAll()
+//                    Date date = Date;
+                    return interviewRepository.findAll(pageable);
                 }catch (Exception e){
-                    return productsRepository.findAll(pageable);
+                    return interviewRepository.findAll(pageable);
                 }
         }
         return interviewRepository.findAll(pageable);

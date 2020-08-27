@@ -4,16 +4,11 @@ package ru.igoresha.app.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.igoresha.app.forms.ProductForm;
 import ru.igoresha.app.models.Product;
-import ru.igoresha.app.repositories.ProductsRepository;
 import ru.igoresha.app.services.ProductsService;
-
-import java.util.List;
 
 @RestController// тут уже стоит по умолчанию @ResponseBody
 @RequestMapping(value = "/products")
@@ -26,7 +21,7 @@ public class ProductController {
     public ResponseEntity<Page<Product>> getAll(@RequestParam(value = "sort", required = true) String sort,
                                                 @RequestParam(value = "filter", required = false) String filter,
                                                  Pageable pageable) {
-        Page<Product> products = productsService.getAllProductsPagesByFilter(sort, filter, pageable);
+        Page<Product> products = productsService.getAllProductsPagesBySortAndFilter(sort, filter, pageable);
         return ResponseEntity.ok(products);
     }
 

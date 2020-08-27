@@ -9,6 +9,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity
 @Builder
+@Table(name = "product")
 public class Product {
 
     @Id
