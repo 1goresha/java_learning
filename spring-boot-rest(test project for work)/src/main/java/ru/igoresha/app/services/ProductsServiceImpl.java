@@ -70,7 +70,7 @@ public class ProductsServiceImpl implements ProductsService {
             case("name") : return productsRepository.findAllByNameContainsOrderByNameAsc(filter, pageable);
             case("price") :
                 try{
-//                    Double d = Double.parseDouble(filter);
+                    Double d = Double.parseDouble(filter);
                     return productsRepository.findAllByPrice(filter, pageable);
                 }catch (Exception e){
                     return productsRepository.findAll(pageable);
