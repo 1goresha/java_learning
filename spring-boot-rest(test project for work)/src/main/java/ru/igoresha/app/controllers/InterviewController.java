@@ -20,9 +20,15 @@ public class InterviewController {
     private InterviewService interviewsService;
 
     @GetMapping
-    public ResponseEntity<Page<Interview>> getAll(@RequestParam(value = "sort", required = true) String sort,
-                                                  @RequestParam(value = "filter", required = false) String filter,
+    public ResponseEntity<Page<Interview>> getAll(@RequestParam(value = "sort", required = true, defaultValue = "id") String sort,
+                                                  @RequestParam(value = "direction", required = false, defaultValue = "asc") String direction,
+                                                  @RequestParam(value = "findAllBy", required = false) String findAllBy,
+                                                  @RequestParam(value = "value", required = false) String value,
                                                   Pageable pageable) {
-        return ResponseEntity.ok(interviewsService.getPageBySortAndFilter(sort, filter, pageable));
+        return ResponseEntity.ok(interviewsService.getPagesBySortAndDirectionAndFilter(sort,
+                direction,
+                findAllBy,
+                value,
+                pageable));
     }
 }

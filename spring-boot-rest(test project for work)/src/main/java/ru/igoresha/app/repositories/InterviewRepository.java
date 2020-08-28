@@ -9,8 +9,23 @@ import java.util.Date;
 
 public interface InterviewRepository extends JpaRepository<Interview, Long> {
 
-    Page<Interview> findAllByNameContainsOrderByNameAsc(String filter, Pageable pageable);
-    Page<Interview> getAllByTimeBeginContains(Date timeBegin, Pageable pageable);
+    Page<Interview> findAllByNameContainsOrderByNameDesc(String value, Pageable pageable);
+    Page<Interview> findAllByNameContainsOrderByNameAsc(String value, Pageable pageable);
 
-    Page<Interview> findAllByTimeBeginLike(Date timeBegin, Pageable pageable);
+    Page<Interview> findAllByNameContainsOrderByDateBeginDesc(String value, Pageable pageable);
+    Page<Interview> findAllByNameContainsOrderByDateBeginAsc(String value, Pageable pageable);
+
+    Page<Interview> findAllByDateBeginOrderByNameDesc(Date value, Pageable pageable);
+    Page<Interview> findAllByDateBeginOrderByNameAsc(Date value, Pageable pageable);
+
+    Page<Interview> findAllByDateBeginOrderByDateBeginDesc(Date value, Pageable pageable);
+    Page<Interview> findAllByDateBeginOrderByDateBeginAsc(Date value, Pageable pageable);
+
+    Page<Interview> findAllByDateEndOrderByNameDesc(Date value, Pageable pageable);
+    Page<Interview> findAllByDateEndOrderByNameAsc(Date value, Pageable pageable);
+
+    Page<Interview> findAllByDateEndOrderByDateBeginDesc(Date value, Pageable pageable);
+    Page<Interview> findAllByDateEndOrderByDateBeginAsc(Date valut, Pageable pageable);
+
+
 }

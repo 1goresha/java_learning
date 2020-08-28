@@ -12,7 +12,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-
+@Table(name = "questions")
 public class Question {
 
     @Id
@@ -20,8 +20,9 @@ public class Question {
     private Long id;
 
     @ManyToOne
+    @JoinColumn(name = "interview_id")
     private Interview interview;
 
     private String text;
-    private Byte serialNumber;
+    private Byte displayOrder;
 }

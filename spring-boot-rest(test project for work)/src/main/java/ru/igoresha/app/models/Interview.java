@@ -2,10 +2,7 @@ package ru.igoresha.app.models;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 @Builder
@@ -16,7 +13,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-
+@Table(name = "interviews")
 public class Interview {
 
     @Id
@@ -24,8 +21,13 @@ public class Interview {
     private Long id;
 
     private String name;
-    private Date timeBegin;
-    private Date timeEnd;
+
+    @Temporal(TemporalType.DATE)
+    private Date dateBegin;
+
+    @Temporal(TemporalType.DATE)
+    private Date dateEnd;
+
     private Boolean isActive;
 
 }
