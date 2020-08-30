@@ -1,5 +1,6 @@
 package ru.igoresha.app.repositories;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -25,7 +26,14 @@ public interface InterviewRepository extends JpaRepository<Interview, Long> {
     Page<Interview> findAllByDateEndOrderByNameAsc(Date value, Pageable pageable);
 
     Page<Interview> findAllByDateEndOrderByDateBeginDesc(Date value, Pageable pageable);
-    Page<Interview> findAllByDateEndOrderByDateBeginAsc(Date valut, Pageable pageable);
+    Page<Interview> findAllByDateEndOrderByDateBeginAsc(Date value, Pageable pageable);
 
+    Page<Interview> findAllByIsActiveOrderByNameDesc(Boolean value, Pageable pageable);
+    Page<Interview> findAllByIsActiveOrderByNameAsc(Boolean value, Pageable pageable);
+
+    Page<Interview> findAllByIsActiveOrderByDateBeginDesc(Boolean value, Pageable pageable);
+    Page<Interview> findAllByIsActiveOrderByDateBeginAsc(Boolean value, Pageable pageable);
+
+    Page<Interview> findAll(Pageable pageable);
 
 }

@@ -5,19 +5,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import ru.igoresha.app.forms.InterviewForm;
 import ru.igoresha.app.models.Interview;
 import ru.igoresha.app.services.InterviewService;
 
 @RestController
-@RequestMapping("/interviews")
+@RequestMapping("/interviews/**")
 public class InterviewController {
 
     @Autowired
-    private InterviewService interviewsService;
+    private InterviewService interviewService;
 
     @GetMapping
     public ResponseEntity<Page<Interview>> getAll(@RequestParam(value = "sort", required = true, defaultValue = "id") String sort,
@@ -25,10 +23,27 @@ public class InterviewController {
                                                   @RequestParam(value = "findAllBy", required = false) String findAllBy,
                                                   @RequestParam(value = "value", required = false) String value,
                                                   Pageable pageable) {
-        return ResponseEntity.ok(interviewsService.getPagesBySortAndDirectionAndFilter(sort,
-                direction,
-                findAllBy,
-                value,
-                pageable));
+        return ResponseEntity.ok(interviewService.getPagesBySortAndDirectionAndFilter(sort, direction, findAllBy, value, pageable));
+    }
+
+    @PostMapping
+    public ResponseEntity<Interview> create(@RequestBody InterviewForm interview){
+        return ResponseEntity.status(201).body(interviewService.addInterview(interview));
+    }
+
+    @PostMapping("/{interview-id}")
+    public ResponseEntity<Interview> edit(@PathVariable(value = "interview-id") Long id, @RequestBody InterviewForm interview){
+        return ResponseEntity.status(202).body(interviewService.update(id, interview));
+    }
+
+    @DeleteMapping("/{interview-id}")
+    public ResponseEntity<Interview> delete(@PathVariable(value = "interview-id") Long id){
+        interviewService.delete(id);
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{interview-id}")
+    public ResponseEntity<Interview> get(@PathVariable(value = "interview-id") Long id){
+        return ResponseEntity.ok(interviewService.get(id));
     }
 }

@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Builder
 @Getter
@@ -13,7 +14,7 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "interviews")
+@Table(name = "interview")
 public class Interview {
 
     @Id
@@ -29,5 +30,8 @@ public class Interview {
     private Date dateEnd;
 
     private Boolean isActive;
+
+    @OneToMany(mappedBy = "interview")
+    private List<Question> questions;
 
 }

@@ -1,9 +1,11 @@
 package ru.igoresha.app.services;
 
+import org.hibernate.proxy.HibernateProxy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import ru.igoresha.app.forms.InterviewForm;
 import ru.igoresha.app.models.Interview;
 import ru.igoresha.app.repositories.InterviewRepository;
 
@@ -27,52 +29,97 @@ public class InterviewServiceImpl implements InterviewService {
         }
     }
 
+    private Boolean castStringToBoolean(String string){
+        return string.equals("true") || string.equals("1");
+    }
+
 
     @Override
     public Page<Interview> getPagesBySortAndDirectionAndFilter(String sort,
                                                                String direction,
-                                                               String selectAll,
-                                                               String where,
+                                                               String findAllBy,
+                                                               String value,
                                                                Pageable pageable) {
 
-        Page<Interview> result = interviewRepository.findAll(pageable);
-        Date dateBegin;
-        Date dateEnd;
-
+    if (sort == null || value == null){
+        return interviewRepository.findAll(pageable);
+    }
         switch (sort) {
             case "name":
-                switch (selectAll) {
+                switch (findAllBy) {
                     case "name":
                         return direction.equals("desc")?
-                                interviewRepository.findAllByNameContainsOrderByNameDesc(where, pageable):
-                                interviewRepository.findAllByNameContainsOrderByNameAsc(where, pageable);
+                                interviewRepository.findAllByNameContainsOrderByNameDesc(value, pageable):
+                                interviewRepository.findAllByNameContainsOrderByNameAsc(value, pageable);
                     case "dateBegin":
                         return direction.equals("desc")?
-                                interviewRepository.findAllByDateBeginOrderByNameDesc(castStringToDate(where), pageable):
-                                interviewRepository.findAllByDateBeginOrderByNameAsc(castStringToDate(where), pageable);
+                                interviewRepository.findAllByDateBeginOrderByNameDesc(castStringToDate(value), pageable):
+                                interviewRepository.findAllByDateBeginOrderByNameAsc(castStringToDate(value), pageable);
                     case "dateEnd":
                         return direction.equals("desc")?
-                                interviewRepository.findAllByDateEndOrderByNameDesc(castStringToDate(where), pageable):
-                                interviewRepository.findAllByDateEndOrderByNameAsc(castStringToDate(where), pageable);
+                                interviewRepository.findAllByDateEndOrderByNameDesc(castStringToDate(value), pageable):
+                                interviewRepository.findAllByDateEndOrderByNameAsc(castStringToDate(value), pageable);
+                    case "isActive":
+                        return direction.equals("desc")?
+                                interviewRepository.findAllByIsActiveOrderByNameDesc(castStringToBoolean(value), pageable):
+                                interviewRepository.findAllByIsActiveOrderByNameAsc(castStringToBoolean(value), pageable);
                 }
             case "dateBegin":
-                switch (selectAll) {
+                switch (findAllBy) {
                     case "name":
                         return direction.equals("desc")?
-                                interviewRepository.findAllByNameContainsOrderByDateBeginDesc(where, pageable):
-                                interviewRepository.findAllByNameContainsOrderByDateBeginAsc(where, pageable);
+                                interviewRepository.findAllByNameContainsOrderByDateBeginDesc(value, pageable):
+                                interviewRepository.findAllByNameContainsOrderByDateBeginAsc(value, pageable);
                     case "dateBegin":
                         return direction.equals("desc")?
-                                interviewRepository.findAllByDateBeginOrderByDateBeginDesc(castStringToDate(where), pageable):
-                                interviewRepository.findAllByDateBeginOrderByDateBeginAsc(castStringToDate(where), pageable);
+                                interviewRepository.findAllByDateBeginOrderByDateBeginDesc(castStringToDate(value), pageable):
+                                interviewRepository.findAllByDateBeginOrderByDateBeginAsc(castStringToDate(value), pageable);
                     case "dateEnd":
                         return  direction.equals("desc")?
-                                interviewRepository.findAllByDateEndOrderByDateBeginDesc(castStringToDate(where), pageable):
-                                interviewRepository.findAllByDateEndOrderByDateBeginAsc(castStringToDate(where), pageable);
+                                interviewRepository.findAllByDateEndOrderByDateBeginDesc(castStringToDate(value), pageable):
+                                interviewRepository.findAllByDateEndOrderByDateBeginAsc(castStringToDate(value), pageable);
+                    case "isActive":
+                        return direction.equals("desc")?
+                                interviewRepository.findAllByIsActiveOrderByDateBeginDesc(castStringToBoolean(value), pageable):
+                                interviewRepository.findAllByIsActiveOrderByDateBeginAsc(castStringToBoolean(value), pageable);
                 }
         }
+        return interviewRepository.findAll(pageable);
+    }
 
+    @Override
+    public Interview addInterview(InterviewForm interviewForm) {
+        Interview interview = Interview.builder()
+                .dateBegin(interviewForm.getDateBegin())
+                .dateEnd(interviewForm.getDateEnd())
+                .isActive(interviewForm.getIsActive())
+                .name(interviewForm.getName())
+                .build();
+        interviewRepository.save(interview);
+        return interview;
+    }
 
-        return result;
+    @Override
+    public Interview update(Long id, InterviewForm interviewForm) {//нужно создать InterviewForm для удобства
+        Interview interview1 = this.get(id);
+        interview1.setDateBegin(interviewForm.getDateBegin());
+        interview1.setDateEnd(interviewForm.getDateEnd());
+        interview1.setIsActive(interviewForm.getIsActive());
+        interview1.setName(interviewForm.getName());
+        return interview1;
+    }
+
+    @Override
+    public void delete(Long id) {
+        interviewRepository.deleteById(id);
+    }
+
+    @Override
+    public Interview get(Long id) {
+        Interview interview = interviewRepository.getOne(id);
+        if (interview instanceof HibernateProxy){
+            return (Interview) ((HibernateProxy) interview).getHibernateLazyInitializer().getImplementation();
+        }
+        return interviewRepository.getOne(id);
     }
 }
