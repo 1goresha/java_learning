@@ -10,7 +10,7 @@ import java.util.Date;
 public interface InterviewService {
     Page<Interview> getPagesBySortAndDirectionAndFilter(String sort,
                                                         String direction,
-                                                        String findAll,
+                                                        String filter,
                                                         String value,
                                                         Pageable pageable);
 

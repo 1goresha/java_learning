@@ -11,7 +11,7 @@ import ru.igoresha.app.models.Interview;
 import ru.igoresha.app.services.InterviewService;
 
 @RestController
-@RequestMapping("/interviews/**")
+@RequestMapping("/interviews")
 public class InterviewController {
 
     @Autowired
@@ -20,10 +20,10 @@ public class InterviewController {
     @GetMapping
     public ResponseEntity<Page<Interview>> getAll(@RequestParam(value = "sort", required = true, defaultValue = "id") String sort,
                                                   @RequestParam(value = "direction", required = false, defaultValue = "asc") String direction,
-                                                  @RequestParam(value = "findAllBy", required = false) String findAllBy,
+                                                  @RequestParam(value = "filter", required = false) String filter,
                                                   @RequestParam(value = "value", required = false) String value,
                                                   Pageable pageable) {
-        return ResponseEntity.ok(interviewService.getPagesBySortAndDirectionAndFilter(sort, direction, findAllBy, value, pageable));
+        return ResponseEntity.ok(interviewService.getPagesBySortAndDirectionAndFilter(sort, direction, filter, value, pageable));
     }
 
     @PostMapping

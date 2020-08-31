@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import ru.igoresha.app.NotFoundException;
+import ru.igoresha.app.exceptions.NotFoundException;
 import ru.igoresha.app.forms.QuestionForm;
 import ru.igoresha.app.models.Interview;
 import ru.igoresha.app.models.Question;
@@ -42,7 +42,7 @@ public class QuestionServiceImpl implements QuestionService {
         if (!interviewRepository.existsById(idI)) {
             throw new NotFoundException();
         }
-        return questionRepository.findAllByInterviewId(idI, pageable);
+        return questionRepository.findAllByInterviewIdOrderByDisplayOrderAsc(idI, pageable);
     }
 
     @Override
@@ -66,11 +66,11 @@ public class QuestionServiceImpl implements QuestionService {
 
 
     @Override
-    public Question get(Long idI, Long idQ) {
-        if (!interviewRepository.existsById(idI)) {
+    public Question get(Long idI, Integer displayOrder) {
+        if (!interviewRepository.existsById(idI) || questionRepository.findByInterviewIdAndDisplayOrder(idI, displayOrder) == null) {
             throw new NotFoundException();
         }
-        Question question = questionRepository.getOne(idQ);
+        Question question = questionRepository.findByInterviewIdAndDisplayOrder(idI, displayOrder);
         if (question instanceof HibernateProxy) {
             return (Question) ((HibernateProxy) question).getHibernateLazyInitializer().getImplementation();
         }
@@ -78,19 +78,24 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public Question update(Long idI, Long idQ, QuestionForm questionForm) {
-        if(!interviewRepository.existsById(idI) || !questionRepository.existsById(idQ)){
+    public Question update(Long idI, Integer displayOrder, QuestionForm questionForm) {
+        if (!interviewRepository.existsById(idI) || questionRepository.findByInterviewIdAndDisplayOrder(idI, displayOrder) == null) {
             throw new NotFoundException();
         }
-        Interview interview = interviewRepository.getOne(idI);
-        if (interview instanceof HibernateProxy){
-            interview = (Interview) ((HibernateProxy) interview).getHibernateLazyInitializer().getImplementation();
-        }
-        Question question = questionRepository.getOne(idQ);
+        Question question = questionRepository.findByInterviewIdAndDisplayOrder(idI, displayOrder);
         if (question instanceof HibernateProxy) {
             question = (Question) ((HibernateProxy) question).getHibernateLazyInitializer().getImplementation();
         }
         question.setText(questionForm.getText());
         return questionRepository.save(question);
+    }
+
+    @Override
+    public void delete(Long idI, Integer displayOrder) {
+        if (!interviewRepository.existsById(idI) || questionRepository.findByInterviewIdAndDisplayOrder(idI, displayOrder) == null) {
+            throw new NotFoundException();
+        }
+        Question question = questionRepository.findByInterviewIdAndDisplayOrder(idI, displayOrder);
+        questionRepository.deleteById(question.getId());
     }
 }

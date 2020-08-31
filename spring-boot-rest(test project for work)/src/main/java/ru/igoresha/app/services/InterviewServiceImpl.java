@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import ru.igoresha.app.exceptions.NotFoundException;
 import ru.igoresha.app.forms.InterviewForm;
 import ru.igoresha.app.models.Interview;
 import ru.igoresha.app.repositories.InterviewRepository;
@@ -37,7 +38,7 @@ public class InterviewServiceImpl implements InterviewService {
     @Override
     public Page<Interview> getPagesBySortAndDirectionAndFilter(String sort,
                                                                String direction,
-                                                               String findAllBy,
+                                                               String filter,
                                                                String value,
                                                                Pageable pageable) {
 
@@ -46,7 +47,7 @@ public class InterviewServiceImpl implements InterviewService {
     }
         switch (sort) {
             case "name":
-                switch (findAllBy) {
+                switch (filter) {
                     case "name":
                         return direction.equals("desc")?
                                 interviewRepository.findAllByNameContainsOrderByNameDesc(value, pageable):
@@ -65,7 +66,7 @@ public class InterviewServiceImpl implements InterviewService {
                                 interviewRepository.findAllByIsActiveOrderByNameAsc(castStringToBoolean(value), pageable);
                 }
             case "dateBegin":
-                switch (findAllBy) {
+                switch (filter) {
                     case "name":
                         return direction.equals("desc")?
                                 interviewRepository.findAllByNameContainsOrderByDateBeginDesc(value, pageable):
@@ -116,10 +117,13 @@ public class InterviewServiceImpl implements InterviewService {
 
     @Override
     public Interview get(Long id) {
+        if (!interviewRepository.existsById(id)){
+            throw new NotFoundException();
+        }
         Interview interview = interviewRepository.getOne(id);
         if (interview instanceof HibernateProxy){
             return (Interview) ((HibernateProxy) interview).getHibernateLazyInitializer().getImplementation();
         }
-        return interviewRepository.getOne(id);
+        return interview;
     }
 }

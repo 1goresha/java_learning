@@ -11,7 +11,9 @@ public interface QuestionService {
 
     Question addQuestion(Long idI, QuestionForm questionForm);
 
-    Question get(Long idQ, Long idI);
+    Question get(Long idI, Integer displayOrder);
 
-    Question update(Long idI, Long idQ, QuestionForm questionForm);
+    Question update(Long idI, Integer displayOrder, QuestionForm questionForm);
+
+    void delete(Long idI, Integer displayOrder);
 }
