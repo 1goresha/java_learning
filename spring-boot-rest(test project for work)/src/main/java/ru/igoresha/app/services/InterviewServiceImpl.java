@@ -26,7 +26,7 @@ public class InterviewServiceImpl implements InterviewService {
         try {
             return DATE_FORMAT.parse(string);
         } catch (ParseException e) {
-            throw new IllegalArgumentException(e);
+            throw new NotFoundException();
         }
     }
 
