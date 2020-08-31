@@ -36,18 +36,18 @@ public class InterviewServiceImpl implements InterviewService {
 
 
     @Override
-    public Page<Interview> getPagesBySortAndDirectionAndFilter(String sort,
+    public Page<Interview> getPagesBySortAndDirectionAndFilter(String sortBy,
                                                                String direction,
-                                                               String filter,
+                                                               String filterBy,
                                                                String value,
                                                                Pageable pageable) {
 
-        if (sort == null || value == null) {
+        if (sortBy == null || value == null) {
             return interviewRepository.findAll(pageable);
         }
-        switch (sort) {
+        switch (sortBy) {
             case "name":
-                switch (filter) {
+                switch (filterBy) {
                     case "name":
                         return direction.equals("desc") ?
                                 interviewRepository.findAllByNameContainsOrderByNameDesc(value, pageable) :
@@ -66,7 +66,7 @@ public class InterviewServiceImpl implements InterviewService {
                                 interviewRepository.findAllByIsActiveOrderByNameAsc(castStringToBoolean(value), pageable);
                 }
             case "dateBegin":
-                switch (filter) {
+                switch (filterBy) {
                     case "name":
                         return direction.equals("desc") ?
                                 interviewRepository.findAllByNameContainsOrderByDateBeginDesc(value, pageable) :

@@ -6,9 +6,9 @@ import ru.igoresha.app.forms.InterviewForm;
 import ru.igoresha.app.models.Interview;
 
 public interface InterviewService {
-    Page<Interview> getPagesBySortAndDirectionAndFilter(String sort,
+    Page<Interview> getPagesBySortAndDirectionAndFilter(String sortBy,
                                                         String direction,
-                                                        String filter,
+                                                        String filterBy,
                                                         String value,
                                                         Pageable pageable);
 

@@ -8,5 +8,5 @@ public class QuestionForm {
 
     private Interview interview;
     private String text;
-    private Byte displayOrder;
+    private Byte displayOrder; //порядок отображения
 }
