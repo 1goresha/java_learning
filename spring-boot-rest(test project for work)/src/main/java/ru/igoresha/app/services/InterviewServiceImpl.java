@@ -22,7 +22,7 @@ public class InterviewServiceImpl implements InterviewService {
 
     private final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
-    private Date castStringToDate(String string){
+    private Date castStringToDate(String string) {
         try {
             return DATE_FORMAT.parse(string);
         } catch (ParseException e) {
@@ -30,7 +30,7 @@ public class InterviewServiceImpl implements InterviewService {
         }
     }
 
-    private Boolean castStringToBoolean(String string){
+    private Boolean castStringToBoolean(String string) {
         return string.equals("true") || string.equals("1");
     }
 
@@ -42,46 +42,46 @@ public class InterviewServiceImpl implements InterviewService {
                                                                String value,
                                                                Pageable pageable) {
 
-    if (sort == null || value == null){
-        return interviewRepository.findAll(pageable);
-    }
+        if (sort == null || value == null) {
+            return interviewRepository.findAll(pageable);
+        }
         switch (sort) {
             case "name":
                 switch (filter) {
                     case "name":
-                        return direction.equals("desc")?
-                                interviewRepository.findAllByNameContainsOrderByNameDesc(value, pageable):
+                        return direction.equals("desc") ?
+                                interviewRepository.findAllByNameContainsOrderByNameDesc(value, pageable) :
                                 interviewRepository.findAllByNameContainsOrderByNameAsc(value, pageable);
                     case "dateBegin":
-                        return direction.equals("desc")?
-                                interviewRepository.findAllByDateBeginOrderByNameDesc(castStringToDate(value), pageable):
+                        return direction.equals("desc") ?
+                                interviewRepository.findAllByDateBeginOrderByNameDesc(castStringToDate(value), pageable) :
                                 interviewRepository.findAllByDateBeginOrderByNameAsc(castStringToDate(value), pageable);
                     case "dateEnd":
-                        return direction.equals("desc")?
-                                interviewRepository.findAllByDateEndOrderByNameDesc(castStringToDate(value), pageable):
+                        return direction.equals("desc") ?
+                                interviewRepository.findAllByDateEndOrderByNameDesc(castStringToDate(value), pageable) :
                                 interviewRepository.findAllByDateEndOrderByNameAsc(castStringToDate(value), pageable);
                     case "isActive":
-                        return direction.equals("desc")?
-                                interviewRepository.findAllByIsActiveOrderByNameDesc(castStringToBoolean(value), pageable):
+                        return direction.equals("desc") ?
+                                interviewRepository.findAllByIsActiveOrderByNameDesc(castStringToBoolean(value), pageable) :
                                 interviewRepository.findAllByIsActiveOrderByNameAsc(castStringToBoolean(value), pageable);
                 }
             case "dateBegin":
                 switch (filter) {
                     case "name":
-                        return direction.equals("desc")?
-                                interviewRepository.findAllByNameContainsOrderByDateBeginDesc(value, pageable):
+                        return direction.equals("desc") ?
+                                interviewRepository.findAllByNameContainsOrderByDateBeginDesc(value, pageable) :
                                 interviewRepository.findAllByNameContainsOrderByDateBeginAsc(value, pageable);
                     case "dateBegin":
-                        return direction.equals("desc")?
-                                interviewRepository.findAllByDateBeginOrderByDateBeginDesc(castStringToDate(value), pageable):
+                        return direction.equals("desc") ?
+                                interviewRepository.findAllByDateBeginOrderByDateBeginDesc(castStringToDate(value), pageable) :
                                 interviewRepository.findAllByDateBeginOrderByDateBeginAsc(castStringToDate(value), pageable);
                     case "dateEnd":
-                        return  direction.equals("desc")?
-                                interviewRepository.findAllByDateEndOrderByDateBeginDesc(castStringToDate(value), pageable):
+                        return direction.equals("desc") ?
+                                interviewRepository.findAllByDateEndOrderByDateBeginDesc(castStringToDate(value), pageable) :
                                 interviewRepository.findAllByDateEndOrderByDateBeginAsc(castStringToDate(value), pageable);
                     case "isActive":
-                        return direction.equals("desc")?
-                                interviewRepository.findAllByIsActiveOrderByDateBeginDesc(castStringToBoolean(value), pageable):
+                        return direction.equals("desc") ?
+                                interviewRepository.findAllByIsActiveOrderByDateBeginDesc(castStringToBoolean(value), pageable) :
                                 interviewRepository.findAllByIsActiveOrderByDateBeginAsc(castStringToBoolean(value), pageable);
                 }
         }
@@ -117,11 +117,11 @@ public class InterviewServiceImpl implements InterviewService {
 
     @Override
     public Interview get(Long id) {
-        if (!interviewRepository.existsById(id)){
+        if (!interviewRepository.existsById(id)) {
             throw new NotFoundException();
         }
         Interview interview = interviewRepository.getOne(id);
-        if (interview instanceof HibernateProxy){
+        if (interview instanceof HibernateProxy) {
             return (Interview) ((HibernateProxy) interview).getHibernateLazyInitializer().getImplementation();
         }
         return interview;

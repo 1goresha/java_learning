@@ -13,12 +13,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableSwagger2
 public class SpringBootRestApplication {
 
-
-//    @Bean
-//    public PasswordEncoder passwordEncoder(){
-//        return new BCryptPasswordEncoder();
-//    }
-
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)

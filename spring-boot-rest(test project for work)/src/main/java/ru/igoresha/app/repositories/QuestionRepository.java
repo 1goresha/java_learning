@@ -9,6 +9,8 @@ import java.util.List;
 
 public interface QuestionRepository extends JpaRepository<Question, Long> {
     Page<Question> findAllByInterviewIdOrderByDisplayOrderAsc(Long idI, Pageable pageable);
+
     List<Question> findAllByInterviewId(Long idI);
+
     Question findByInterviewIdAndDisplayOrder(Long idI, Integer displayOrder);
 }

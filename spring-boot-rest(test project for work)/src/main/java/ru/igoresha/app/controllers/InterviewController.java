@@ -27,23 +27,23 @@ public class InterviewController {
     }
 
     @PostMapping
-    public ResponseEntity<Interview> create(@RequestBody InterviewForm interview){
+    public ResponseEntity<Interview> create(@RequestBody InterviewForm interview) {
         return ResponseEntity.status(201).body(interviewService.addInterview(interview));
     }
 
     @PostMapping("/{interview-id}")
-    public ResponseEntity<Interview> edit(@PathVariable(value = "interview-id") Long id, @RequestBody InterviewForm interview){
+    public ResponseEntity<Interview> edit(@PathVariable(value = "interview-id") Long id, @RequestBody InterviewForm interview) {
         return ResponseEntity.status(202).body(interviewService.update(id, interview));
     }
 
     @DeleteMapping("/{interview-id}")
-    public ResponseEntity<Interview> delete(@PathVariable(value = "interview-id") Long id){
+    public ResponseEntity<Interview> delete(@PathVariable(value = "interview-id") Long id) {
         interviewService.delete(id);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/{interview-id}")
-    public ResponseEntity<Interview> get(@PathVariable(value = "interview-id") Long id){
+    public ResponseEntity<Interview> get(@PathVariable(value = "interview-id") Long id) {
         return ResponseEntity.ok(interviewService.get(id));
     }
 }
