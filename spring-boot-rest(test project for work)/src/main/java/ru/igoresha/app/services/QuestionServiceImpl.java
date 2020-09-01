@@ -24,6 +24,11 @@ public class QuestionServiceImpl implements QuestionService {
     @Autowired
     private InterviewRepository interviewRepository;
 
+    /**
+     * @param idI id Interview, need to find Interview object by id
+     * @param questions questions list need to find max value of displayOrder
+     * @return max value of displayOrder, if question list is empty max value = 0
+     */
     private int getQuestionMaxDisplayOrderByInterviewId(Long idI, List<Question> questions) {
         int max = 0;
         if (!questions.isEmpty()) {
@@ -45,6 +50,11 @@ public class QuestionServiceImpl implements QuestionService {
         return questionRepository.findAllByInterviewIdOrderByDisplayOrderAsc(idI, pageable);
     }
 
+    /**
+     * @param idI Interview id
+     * @param questionForm need to create new Question object
+     * @return Question object with incremented displayOrder
+     */
     @Override
     public Question addQuestion(Long idI, QuestionForm questionForm) {
         if (!interviewRepository.existsById(idI)) {

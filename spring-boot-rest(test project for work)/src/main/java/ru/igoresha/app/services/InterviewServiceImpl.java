@@ -22,6 +22,10 @@ public class InterviewServiceImpl implements InterviewService {
 
     private final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
+    /**
+     * @param string date in String format
+     * @return date in Date format, if try to parse is false throw NotFoundException with status 404
+     */
     private Date castStringToDate(String string) {
         try {
             return DATE_FORMAT.parse(string);
@@ -30,6 +34,10 @@ public class InterviewServiceImpl implements InterviewService {
         }
     }
 
+    /**
+     * @param string string need to convert to Boolean
+     * @return converting boolean result
+     */
     private Boolean castStringToBoolean(String string) {
         return string.equals("true") || string.equals("1");
     }
@@ -101,7 +109,7 @@ public class InterviewServiceImpl implements InterviewService {
     }
 
     @Override
-    public Interview update(Long id, InterviewForm interviewForm) {//нужно создать InterviewForm для удобства
+    public Interview update(Long id, InterviewForm interviewForm) {
         Interview interview1 = this.get(id);
         interview1.setDateBegin(interviewForm.getDateBegin());
         interview1.setDateEnd(interviewForm.getDateEnd());
