@@ -1,0 +1,55 @@
+POST http://localhost/products
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+{
+  "name": "ветчина",
+  "price": 200
+}
+
+###
+
+GET http://localhost/products
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+###
+
+POST http://localhost/products/4
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+{
+  "name": "Сыр",
+  "price": 220
+}
+
+###
+
+GET http://localhost/products/5
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+###
+
+
+DELETE http://localhost/products/6
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+###
+
+POST http://localhost/products
+Accept: */*
+Cache-Control: no-cache
+Content-Type: application/json
+
+{
+  "name": "пельмени",
+  "price": 250
+}
