@@ -1,5 +1,7 @@
 package com.company;
 
+import sun.awt.windows.ThemeReader;
+
 public class Main {
 
     public static void main(String[] args) {
@@ -33,6 +35,12 @@ public class Main {
                 for (int i = 1; i <= 99; i++) {
 
                     myTimer.showTime();
+
+//                    try {
+//                        Thread.sleep(1000);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
                 }
 
                 t2.stop();
@@ -66,9 +74,9 @@ class MyTimer {
                 e.printStackTrace();
             }
         } else {
-            System.out.println("(Поток1) : С начала сессии прошло " + time);
+
+            System.out.println("(Поток1) : С начала сессии прошло " + time++);
             notifyAll();
-            time++;
         }
     }
 
@@ -83,9 +91,8 @@ class MyTimer {
             }
         } else {
 
-            System.out.println("(Поток2) : Оповещение : прошло " + time);
+            System.out.println("(Поток2) : Оповещение : прошло " + time++);
             notifyAll();
-            time++;
         }
     }
 
@@ -100,9 +107,8 @@ class MyTimer {
             }
         } else {
 
-            System.out.println("(Поток3) : Оповещение : прошло " + time);
+            System.out.println("(Поток3) : Оповещение : прошло " + time++);
             notifyAll();
-            time++;
         }
     }
 }
