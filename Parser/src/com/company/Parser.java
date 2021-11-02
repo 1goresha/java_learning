@@ -2,6 +2,7 @@ package com.company;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class Parser {
 
@@ -34,13 +35,17 @@ public class Parser {
         return text;
     }
 
-    public int findCountOfWord(ArrayList<String> text, String word) {
+    public int findCountOfWord(ArrayList<String> text) {
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("¬ведите слово дл€ поиска : ");
+        String word = scanner.next();
 
         int count = 0;
 
         for (String line : text) {
 
-            if (line.contains(word)){
+            if (line.toLowerCase().contains(word.toLowerCase())){
 
                 count++;
             }

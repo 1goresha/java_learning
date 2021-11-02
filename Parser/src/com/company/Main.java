@@ -22,7 +22,7 @@ public class Main {
         if(warAndPeace != null){
 
             warAndPeace.forEach(System.out::println);
-            System.out.println("количество найденных слов : " + parser.findCountOfWord(warAndPeace, "страдание"));
+            System.out.println("количество найденных слов : " + parser.findCountOfWord(warAndPeace));
         }
     }
 }
