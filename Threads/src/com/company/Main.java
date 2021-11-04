@@ -1,29 +1,29 @@
 package com.company;
 
-import sun.awt.windows.ThemeReader;
-
 public class Main {
 
     public static void main(String[] args) {
 
-        MyTimer myTimer = new MyTimer();
+        MyTimer myTimer1 = new MyTimer(5);
+//        MyTimer myTimer2 = new MyTimer(7);
 
-        Thread t3 = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                while (true) {
-
-                    myTimer.showMessageIn7Sec();
-                }
-            }
-        });
+//        Thread t3 = new Thread(new Runnable() {
+//            @Override
+//            public void run() {
+//                while (true) {
+//
+//                    myTimer1.showMessageInPeriod();
+//                }
+//            }
+//        });
 
         Thread t2 = new Thread(new Runnable() {
             @Override
             public void run() {
                 while (true) {
 
-                    myTimer.showMessageIn5Sec();
+                    myTimer1.showMessageInPeriod();
+//                    myTimer2.showMessageInPeriod();
                 }
             }
         });
@@ -34,7 +34,8 @@ public class Main {
 
                 for (int i = 1; i <= 99; i++) {
 
-                    myTimer.showTime();
+                    myTimer1.showTime();
+//                    myTimer2.showTime();
 
 //                    try {
 //                        Thread.sleep(1000);
@@ -44,13 +45,13 @@ public class Main {
                 }
 
                 t2.stop();
-                t3.stop();
+//                t3.stop();
             }
         });
 
         t1.start();
         t2.start();
-        t3.start();
+//        t3.start();
 
     }
 }
@@ -58,57 +59,61 @@ public class Main {
 class MyTimer {
 
     int time;
+    int period;
+    boolean b;
 
-    public MyTimer() {
+    public MyTimer(int period) {
         this.time = 1;
-
+        this.period = period;
     }
 
     public synchronized void showTime() {
 
-        if (time % 5 == 0 || time % 7 == 0) {
+        if (time % period == 0) {
 
             try {
                 wait();
+//                System.out.println("(Поток1) : ждет");
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         } else {
 
+            notify();
             System.out.println("(Поток1) : С начала сессии прошло " + time++);
-            notifyAll();
         }
     }
 
-    public synchronized void showMessageIn5Sec() {
+    public synchronized void showMessageInPeriod() {
 
-        if (time % 5 != 0) {
+        if (time % period != 0) {
 
             try {
                 wait();
+//                System.out.println("(Поток2) : ждет");
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
         } else {
 
+            notify();
             System.out.println("(Поток2) : Оповещение : прошло " + time++);
-            notifyAll();
         }
     }
 
-    public synchronized void showMessageIn7Sec() {
-
-        if (time % 7 != 0) {
-
-            try {
-                wait();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        } else {
-
-            System.out.println("(Поток3) : Оповещение : прошло " + time++);
-            notifyAll();
-        }
-    }
+//    public synchronized void showMessageIn7Sec() {
+//
+//        if (time % 7 != 0) {
+//
+//            try {
+//                wait();
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//        } else {
+//
+//            System.out.println("(Поток3) : Оповещение : прошло " + time++);
+//            notifyAll();
+//        }
+//    }
 }
