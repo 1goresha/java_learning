@@ -1,0 +1,3 @@
+interface WaterBoy {
+    fun bringWater()
+}

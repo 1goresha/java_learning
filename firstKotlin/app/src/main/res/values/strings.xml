@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">firstKotlin</string>
+    <string name="enter_name">введите имя</string>
+</resources>
