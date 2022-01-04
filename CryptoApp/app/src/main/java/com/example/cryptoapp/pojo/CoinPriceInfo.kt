@@ -3,6 +3,8 @@ package com.example.cryptoapp.pojo
 import androidx.annotation.NonNull
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.example.cryptoapp.api.ApiFactory.BASE_IMAGE_URL
+import com.example.cryptoapp.utils.convertTimestampToTime
 import com.google.gson.annotations.SerializedName
 
 
@@ -16,7 +18,7 @@ data class CoinPriceInfo (
     @SerializedName("TOSYMBOL"                ) var toSymbol                : String? = null,
     @SerializedName("MARKET"                  ) var market                  : String? = null,
     @SerializedName("PRICE"                   ) var price                   : String? = null,
-    @SerializedName("LASTUPDATE"              ) var lastUpdate              : String? = null,
+    @SerializedName("LASTUPDATE"              ) var lastUpdate              : Long? = null,
     @SerializedName("LASTVOLUME"              ) var lastVolume              : String? = null,
     @SerializedName("LASTVOLUMETO"            ) var lastVolumeTo            : String? = null,
     @SerializedName("LASTTRADEID"             ) var lastTradeId             : String? = null,
@@ -57,4 +59,12 @@ data class CoinPriceInfo (
 //    @SerializedName("TOTALTOPTIERVOLUME24HTO" ) var TOTALTOPTIERVOLUME24HTO : String? = null,
     @SerializedName("IMAGEURL"                ) var imageUrl                : String? = null
 
-)
+) {
+    fun getLastUpdatedTime(): String {
+        return convertTimestampToTime(lastUpdate)
+    }
+
+    fun getFullImageUrl() :String {
+        return BASE_IMAGE_URL + imageUrl
+    }
+}
