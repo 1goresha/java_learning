@@ -14,7 +14,7 @@ object ShopListRepositoryImpl : ShopListRepository {
     private val shopList = sortedSetOf<ShopItem>({ o1, o2 -> o1.id.compareTo(o2.id) })
 
     init {
-        for(i in 0 until 1000){
+        for(i in 0 until 10){
             val item = ShopItem("Name $i", i, Random.nextBoolean())
             addShopItem(item)
         }
@@ -41,7 +41,7 @@ object ShopListRepositoryImpl : ShopListRepository {
 
     override fun getShopItem(id: Int): ShopItem {
         return shopList.find { it.id == id }
-            ?: throw RuntimeException("Element with id = $id not found")           //подразумевается, что shopItem не может быть равным null, в случаии null он бросает ошибку
+            ?: throw RuntimeException("Element with id = $id not found")           //подразумевается, что shopItem не может быть равным null, в случаи null он бросает ошибку
     }
 
     override fun getShopList(): LiveData<List<ShopItem>> {

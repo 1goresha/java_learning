@@ -30,12 +30,17 @@ import android.view.View;
 import android.widget.Button;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
     Surface recorderSurface = null;
     public static final String LOG_TAG = "myLogs";
+
+    SimpleDateFormat formatter = new SimpleDateFormat("ddMMyyyyHHmmss");
+    Date date = new Date();
 
     CameraService[] myCameras = null;
 
@@ -167,7 +172,7 @@ public class MainActivity extends AppCompatActivity {
         mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mMediaRecorder.setVideoSource(MediaRecorder.VideoSource.SURFACE);
         mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
-        mCurrentFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), "test" + count + ".avi");
+        mCurrentFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), "test"+ formatter.format(date) + ".avi");
         mMediaRecorder.setOutputFile(mCurrentFile.getAbsolutePath());
         CamcorderProfile profile = CamcorderProfile.get(CamcorderProfile.QUALITY_480P);
         mMediaRecorder.setVideoSize(640, 480);
@@ -178,7 +183,6 @@ public class MainActivity extends AppCompatActivity {
         mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
         mMediaRecorder.setAudioEncodingBitRate(profile.audioBitRate);
         mMediaRecorder.setAudioSamplingRate(profile.audioSampleRate);
-
 
     }
 
@@ -194,8 +198,8 @@ public class MainActivity extends AppCompatActivity {
 
 
         mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
-        mCurrentFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), "test" + count + ".avi");
-        mMediaRecorder.setOutputFile(mCurrentFile.getAbsolutePath());
+//        mCurrentFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), "test" + formatter.format(date) + ".avi");
+//        mMediaRecorder.setOutputFile(mCurrentFile.getAbsolutePath());
         mMediaRecorder.setVideoSize(640, 480);
         CamcorderProfile profile = CamcorderProfile.get(CamcorderProfile.QUALITY_480P);
         mMediaRecorder.setVideoFrameRate(profile.videoFrameRate);
@@ -264,7 +268,8 @@ public class MainActivity extends AppCompatActivity {
         @RequiresApi(api = Build.VERSION_CODES.M)
         private void startCameraPreviewSession() {
 
-            SurfaceTexture texture = mImageView.getSurfaceTexture();
+//            SurfaceTexture texture = mImageView.getSurfaceTexture();
+            SurfaceTexture texture = new SurfaceTexture(1);
             texture.setDefaultBufferSize(640, 480);
             Surface surface = new Surface(texture);
 
@@ -292,6 +297,7 @@ public class MainActivity extends AppCompatActivity {
 
                 } catch (Exception e) {
                     Log.i(LOG_TAG, "не запустили медиа рекордер");
+                    Log.i(LOG_TAG, "original error = " + e.getMessage());
                 }
                 mPreviewBuilder.addTarget(recorderSurface);
 

@@ -20,6 +20,8 @@ import android.hardware.camera2.CaptureRequest;
 import android.media.MediaCodec;
 import android.media.MediaCodecInfo;
 import android.media.MediaFormat;
+import android.net.rtp.AudioGroup;
+import android.net.rtp.RtpStream;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -81,9 +83,10 @@ public class MainActivity extends AppCompatActivity {
 
     DatagramSocket udpSocket;
     DatagramSocket udpSocketIn;
-    String ip_address = "192.168.0.100";    // сюда пишете IP адрес телефона куда шлете //видео, но можно и себе
+    String ip_address = "192.168.0.101";    // сюда пишете IP адрес телефона куда шлете //видео, но можно и себе
+//    String ip_address = "192.168.0.186";    // сюда пишете IP адрес телефона куда шлете //видео, но можно и себе
     InetAddress address;
-    int port = 40002;
+    int port = 5004;
 
     ByteArrayOutputStream out;
 
@@ -115,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
 
         setContentView(R.layout.activity_main);
 
@@ -148,7 +151,10 @@ public class MainActivity extends AppCompatActivity {
                 setUpMediaCodec();// инициализируем Медиа Кодек
 
                 if (myCameras[CAMERA1] != null) {// открываем камеру
-                    if (!myCameras[CAMERA1].isOpen()) myCameras[CAMERA1].openCamera();
+                    if (!myCameras[CAMERA1].isOpen()) {
+                        myCameras[CAMERA1].openCamera();
+                        Toast.makeText(MainActivity.this, myCameras[CAMERA1].toString(), Toast.LENGTH_SHORT).show();
+                    }
                 }
 
 
@@ -193,7 +199,7 @@ public class MainActivity extends AppCompatActivity {
 
         try {
             address = InetAddress.getByName(ip_address);
-            Log.i(LOG_TAG, "  есть адрес");
+            Log.i(LOG_TAG, "  есть адрес = " + address);
         } catch (Exception e) {
 
 
@@ -263,7 +269,7 @@ public class MainActivity extends AppCompatActivity {
 
         private void startCameraPreviewSession() {
             SurfaceTexture texture = mImageViewUp.getSurfaceTexture();
-            texture.setDefaultBufferSize(480, 640);
+            texture.setDefaultBufferSize(640, 480);
             surface = new Surface(texture);
 
 
@@ -287,16 +293,19 @@ public class MainActivity extends AppCompatActivity {
                                 try {
                                     mSession.setRepeatingRequest(mPreviewBuilder.build(), null, mBackgroundHandler);
                                 } catch (CameraAccessException e) {
-                                    e.printStackTrace();
+                                    Log.e("ERRRRRRRRRROR!!!", "original error1 = " + e.getMessage());
+//                                    e.printStackTrace();
                                 }
                             }
 
                             @Override
                             public void onConfigureFailed(CameraCaptureSession session) {
+                                Log.e("ERRRRRRRRRROR!!!", "onConfigureFailed!!!");
                             }
                         }, mBackgroundHandler);
             } catch (CameraAccessException e) {
-                e.printStackTrace();
+                Log.e("ERRRRRRRRRROR!!!", "original error3 = " + e.getMessage());
+//                e.printStackTrace();
             }
 
         }
@@ -370,8 +379,8 @@ public class MainActivity extends AppCompatActivity {
             Log.i(LOG_TAG, "а нету кодека");
         }
         {
-            int width = 480; // ширина видео
-            int height = 640; // высота видео
+            int width = 640; // ширина видео
+            int height = 480; // высота видео
             int colorFormat = MediaCodecInfo.CodecCapabilities.COLOR_FormatSurface; // формат ввода цвета
             int videoBitrate = 2000000; // битрейт видео в bps (бит в секунду)
             int videoFramePerSecond = 30; // FPS
@@ -382,7 +391,6 @@ public class MainActivity extends AppCompatActivity {
             format.setInteger(MediaFormat.KEY_BIT_RATE, videoBitrate);
             format.setInteger(MediaFormat.KEY_FRAME_RATE, videoFramePerSecond);
             format.setInteger(MediaFormat.KEY_I_FRAME_INTERVAL, iframeInterval);
-
 
             encoder.configure(format, null, null, MediaCodec.CONFIGURE_FLAG_ENCODE); // конфигурируем кодек как кодер
             mEncoderSurface = encoder.createInputSurface(); // получаем Surface кодера
@@ -401,15 +409,15 @@ public class MainActivity extends AppCompatActivity {
             Log.i(LOG_TAG, "а нету декодека");
         }
 
-        int width = 480; // ширина видео
-        int height = 640; // высота видео
+        int width = 640; // ширина видео
+        int height = 480; // высота видео
 
 
         MediaFormat format = MediaFormat.createVideoFormat("video/avc", width, height);
 
         format.setInteger(MediaFormat.KEY_ROTATION, 90);
         SurfaceTexture texture = mImageViewDown.getSurfaceTexture();
-        texture.setDefaultBufferSize(480, 640);
+        texture.setDefaultBufferSize(640, 480);
         mDecoderSurface = new Surface(texture);
 
         decoder.configure(format, mDecoderSurface, null, 0);
@@ -419,8 +427,6 @@ public class MainActivity extends AppCompatActivity {
         decoder.setCallback(new DecoderCallback());
         decoder.start();
         Log.i(LOG_TAG, "запустили декодер");
-
-
     }
 
     //CALLBACK FOR DECODER
@@ -436,7 +442,7 @@ public class MainActivity extends AppCompatActivity {
                 out.reset();
             }
             decoderInputBuffer.put(b);
-            codec.queueInputBuffer(index, 0, b.length, 0, 0);
+            codec.queueInputBuffer(index, 0, b.length, 0, 0);   //массив байтов кладем в очередь кодека
 
         }
 
@@ -444,8 +450,8 @@ public class MainActivity extends AppCompatActivity {
         public void onOutputBufferAvailable(MediaCodec codec, int index, MediaCodec.BufferInfo info) {
             {
                 {
-                    decoderOutputBuffer = codec.getOutputBuffer(index);
-                    codec.releaseOutputBuffer(index, true);
+                    decoderOutputBuffer = codec.getOutputBuffer(index);         //вынимаем данные(массив данных)
+                    codec.releaseOutputBuffer(index, true);             //отправляем на Surface
                 }
             }
         }
@@ -460,7 +466,6 @@ public class MainActivity extends AppCompatActivity {
             Log.i(LOG_TAG, "decoder output format changed: " + format);
         }
     }
-
 
     private class EncoderCallback extends MediaCodec.Callback {
 
@@ -524,6 +529,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    //отдельный поток для приема дэйтаграмм по UDP
+    //отдельный потому что мы не знаем, когда придут слудующие дэйтаграммы
     public class Udp_recipient extends Thread {
 
         Udp_recipient() {

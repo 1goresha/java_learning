@@ -15,7 +15,7 @@ class ShopItemViewModel : ViewModel() {
     private val editShopItemUseCase = EditShopItemUseCase(repositoryImpl)
 
     private val _errorInputName = MutableLiveData<Boolean>()
-    val errorInputName: LiveData<Boolean>
+    val errorInputName: LiveData<Boolean>           //неизменяемая лайвдата, которая используется во view
         get() = _errorInputName
 
     private val _errorInputCount = MutableLiveData<Boolean>()
@@ -26,9 +26,13 @@ class ShopItemViewModel : ViewModel() {
     val shopItem: LiveData<ShopItem>
         get() = _shopItem
 
-    fun getShopItem(id: Int): ShopItem {
+    private val _shouldCloseWindow = MutableLiveData<Unit>()
+    val shouldCloseWindow: LiveData<Unit>
+        get() = _shouldCloseWindow
 
-        return getShopItemUseCase.getShopItem(id)
+    fun getShopItem(id: Int) {
+        val item = getShopItemUseCase.getShopItem(id)
+        _shopItem.value = item
     }
 
     fun addShopItem(inputName: String?, inputCount: String?) {
@@ -38,6 +42,7 @@ class ShopItemViewModel : ViewModel() {
         if (validFields) {
             val shopItem = ShopItem(name, count, true)
             addShopItemUseCase.addShopItem(shopItem)
+            finishWork()
         }
     }
 
@@ -46,8 +51,11 @@ class ShopItemViewModel : ViewModel() {
         val count = parseCount(inputCount)
         val validFields = validateInput(name, count)
         if (validFields) {
-            val shopItem = ShopItem(name, count, true)
-            editShopItemUseCase.editShopItem(shopItem)
+            _shopItem.value?.let {
+                val item = it.copy(name = name, count = count)
+                editShopItemUseCase.editShopItem(item)
+                finishWork()
+            }
         }
     }
 
@@ -76,11 +84,15 @@ class ShopItemViewModel : ViewModel() {
         return result
     }
 
-    private fun resetErrorInputName() {
+    fun resetErrorInputName() {
         _errorInputName.value = false
     }
 
-    private fun resetErrorInputCount() {
+    fun resetErrorInputCount() {
         _errorInputCount.value = false
+    }
+
+    private fun finishWork() {
+        _shouldCloseWindow.value = Unit
     }
 }
