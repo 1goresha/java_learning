@@ -268,8 +268,8 @@ public class MainActivity extends AppCompatActivity {
         @RequiresApi(api = Build.VERSION_CODES.M)
         private void startCameraPreviewSession() {
 
-//            SurfaceTexture texture = mImageView.getSurfaceTexture();
-            SurfaceTexture texture = new SurfaceTexture(1);
+            SurfaceTexture texture = mImageView.getSurfaceTexture();
+//            SurfaceTexture texture = new SurfaceTexture(1);
             texture.setDefaultBufferSize(640, 480);
             Surface surface = new Surface(texture);
 
